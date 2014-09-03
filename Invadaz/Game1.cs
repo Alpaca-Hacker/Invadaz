@@ -11,8 +11,9 @@ namespace Invadaz
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D invaderTexture1, invaderTexture2;
+
         Vector2 location;
+        Sprite player;
         int direction;
         bool anim = true;
 
@@ -27,7 +28,7 @@ namespace Invadaz
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            IsMouseVisible = true;
             base.Initialize();
         }
 
@@ -36,10 +37,11 @@ namespace Invadaz
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            invaderTexture1 = Content.Load<Texture2D>("Ufo1");
-            invaderTexture2 = Content.Load<Texture2D>("Ufo2");
+
+            player = new Sprite(Content.Load<Texture2D>("enemy3"), 6,1, 3);
             location = Vector2.Zero;
             direction = 5;
+
         }
 
         
@@ -53,6 +55,7 @@ namespace Invadaz
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            player.Update(gameTime);
             if ((gameTime.TotalGameTime.Ticks % 5) == 0)
             {
 
@@ -72,18 +75,7 @@ namespace Invadaz
             GraphicsDevice.Clear(Color.Black);
           
             spriteBatch.Begin();
-            if (location.X%2 == 0)
-            {
-                anim = !anim;
-            }
-            for (int i = 100; i < 250; i+=35)
-            {
-                for (int j = 0; j < 350; j+=35)
-                {
-                    var where = new Vector2(j, i);
-                    spriteBatch.Draw((anim? invaderTexture1:invaderTexture2), location+where, Color.White);
-                }
-            }
+            player.Draw(spriteBatch);
             spriteBatch.End();
            
             base.Draw(gameTime);
