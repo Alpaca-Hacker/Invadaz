@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Invadaz
 {
-    public class Sprite
+    public  class Sprite
     {
         private Texture2D _texture;
         private int _rows;
@@ -32,7 +32,7 @@ namespace Invadaz
         }
 
 
-        public void Update(GameTime gameTime)
+        public void  Update(GameTime gameTime)
         {
            
             if (gameTime.TotalGameTime.Ticks % _timing == 0)
@@ -60,8 +60,9 @@ namespace Invadaz
 
             Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
             Rectangle destinationRectangle = new Rectangle((int)Location.X, (int)Location.Y, width, height);
+            
             spriteBatch.Draw(_texture, destinationRectangle, sourceRectangle, Color.White);
-
+            
         }
     }
 }

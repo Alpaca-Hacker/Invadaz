@@ -13,7 +13,7 @@ namespace Invadaz
         SpriteBatch spriteBatch;
 
         Rectangle gameBounds;
-        Sprite player;
+        Player player;
 
 
         public Game1()
@@ -37,7 +37,8 @@ namespace Invadaz
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             gameBounds = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
-            player = new Sprite(Content.Load<Texture2D>("Player"), 1,4, 3);
+            player = new Player(Content.Load<Texture2D>("Player"), 1,4,gameBounds, 3);
+            player.Location = new Vector2(0, gameBounds.Height - 100);
 
 
         }
