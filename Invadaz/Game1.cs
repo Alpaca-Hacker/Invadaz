@@ -12,10 +12,9 @@ namespace Invadaz
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Vector2 location;
+        Rectangle gameBounds;
         Sprite player;
-        int direction;
-        bool anim = true;
+
 
         public Game1()
             : base()
@@ -37,10 +36,9 @@ namespace Invadaz
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            gameBounds = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
+            player = new Sprite(Content.Load<Texture2D>("Player"), 1,4, 3);
 
-            player = new Sprite(Content.Load<Texture2D>("enemy3"), 6,1, 3);
-            location = Vector2.Zero;
-            direction = 5;
 
         }
 
@@ -56,16 +54,8 @@ namespace Invadaz
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             player.Update(gameTime);
-            if ((gameTime.TotalGameTime.Ticks % 5) == 0)
-            {
 
-                location.X += direction;
 
-                if (location.X > (Window.ClientBounds.Width - 350) || location.X < 0)
-                {
-                    direction = -direction;
-                }
-            }
             base.Update(gameTime);
         }
 
