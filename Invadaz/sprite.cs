@@ -9,7 +9,7 @@ namespace Invadaz
 {
     public  class Sprite
     {
-        private Texture2D _texture;
+        protected Texture2D _texture;
         private int _rows;
         private int _columns;
         private int _timing;
@@ -51,7 +51,7 @@ namespace Invadaz
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, float size=1.0f)
         {
             int width = _texture.Width / _columns;
             int height = _texture.Height / _rows;
@@ -59,7 +59,7 @@ namespace Invadaz
             int column = _currentFrame % _columns;
 
             Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
-            Rectangle destinationRectangle = new Rectangle((int)Location.X, (int)Location.Y, width, height);
+            Rectangle destinationRectangle = new Rectangle((int)Location.X, (int)Location.Y, (int)(width*size), (int)(height*size));
             
             spriteBatch.Draw(_texture, destinationRectangle, sourceRectangle, Color.White);
             

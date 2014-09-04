@@ -34,10 +34,12 @@ namespace Invadaz
                 location.X+= _moveSpeed;
             }
             this.Location = location;
+  
 
             base.Update(gameTime);
 
         }
+
 
 
     }
