@@ -19,7 +19,7 @@ namespace Invadaz
             _gameBounds = gameBounds;
         }
 
-        public new int Update(GameTime gameTime)
+        public override int Update(GameTime gameTime)
         {
             var location = this.Location;
             location.Y-= 3;

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace Invadaz
 {
@@ -16,9 +17,9 @@ namespace Invadaz
         Rectangle gameBounds;
         Player player;
         EnemyController enemyController;
-        Bullet bullet;
+        private int lastFiredTicks = 0;
         private Texture2D bulletTexture;
-        public object[] gameObjects;
+        public List<Sprite> gameObjects = new List<Sprite>();
         Vector2 bulletOffset;
 
         public Game1()
@@ -28,7 +29,7 @@ namespace Invadaz
             Content.RootDirectory = "Content";
         }
 
-    
+
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -43,7 +44,7 @@ namespace Invadaz
 
             gameBounds = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
             var playerTexture = Content.Load<Texture2D>("Player");
-            player = new Player(playerTexture, 1,4,gameBounds, 3);
+            player = new Player(playerTexture, 1, 4, gameBounds, 3);
             player.Location = new Vector2(0, gameBounds.Height - 100);
             Texture2D[] enemyTextures = {Content.Load<Texture2D>("Enemy1"),
                                             Content.Load<Texture2D>("Enemy2"),
@@ -53,36 +54,53 @@ namespace Invadaz
             };
             enemyController = new EnemyController();
             enemyController.Startup(gameBounds, enemyTextures);
-            bulletTexture = Content.Load<Texture2D>("single");
-            bulletOffset = new Vector2( (float)((playerTexture.Width / 8)*.75 - bulletTexture.Width / 2),(float)-bulletTexture.Height);
+            bulletTexture = Content.Load<Texture2D>("bullet");
+            bulletOffset = new Vector2((float)((playerTexture.Width / 8) * .75 - bulletTexture.Width / 2), (float)-bulletTexture.Height);
+            
 
         }
 
-        
+
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
         }
 
-    
+
         protected override void Update(GameTime gameTime)
         {
+            if (lastFiredTicks>0)
+            {
+                lastFiredTicks--;
+            }
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Space)&& bullet==null)
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && lastFiredTicks == 0 && (gameObjects.FindAll(x => x.GetType().Name == "Bullet").Count <5))
             {
-               bullet = new Bullet(bulletTexture, (player.Location + bulletOffset), enemyController, gameBounds);
+                gameObjects.Add(new Bullet(bulletTexture, (player.Location + bulletOffset), enemyController, gameBounds));
+                lastFiredTicks = 30;
             }
 
             player.Update(gameTime);
             enemyController.Update(gameTime);
-            if (bullet != null)
+            if (gameObjects != null)
             {
-                int check = bullet.Update(gameTime);
-                if (check == 1)
+                var removeMe = new List<Sprite>();
+                foreach (var gameObject in gameObjects)
                 {
-                    bullet = null;
+                    int check = gameObject.Update(gameTime);
+                    if (check == 1)
+                    {
+                        removeMe.Add(gameObject);
+                    }
+                }
+                if (removeMe != null)
+                {
+                    foreach (var del in removeMe)
+                    {
+                        gameObjects.Remove(del);
+                    }
                 }
             }
             base.Update(gameTime);
@@ -92,17 +110,22 @@ namespace Invadaz
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-          
+
             spriteBatch.Begin();
-            player.Draw(spriteBatch,0.75f);
+            player.Draw(spriteBatch, 0.75f);
             enemyController.Draw(spriteBatch);
-            if (bullet != null)
+            if (gameObjects != null)
             {
-                bullet.Draw(spriteBatch,5);
+                foreach (var gameObject in gameObjects)
+                {
+                    gameObject.Draw(spriteBatch);
+                }
             }
             spriteBatch.End();
-           
+
             base.Draw(gameTime);
         }
+
     }
 }
+// gameObjects.Exists(x => x.GetType().Name == "Bullet")

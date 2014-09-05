@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Invadaz
 {
-    public  class Sprite
+    public class Sprite
     {
         protected Texture2D _texture;
         private int _rows;
@@ -32,10 +32,10 @@ namespace Invadaz
         }
 
 
-        public void  Update(GameTime gameTime)
+        public virtual int Update(GameTime gameTime)
         {
            
-            if (gameTime.TotalGameTime.Ticks % _timing == 0)
+            if (gameTime.TotalGameTime.Ticks % _timing == 0 && _totalFrames >1)
             { 
                 _currentFrame += _anim;
                 if (_currentFrame < 0)
@@ -49,6 +49,7 @@ namespace Invadaz
                     _currentFrame = _totalFrames - 2;
                 }
             }
+            return 0;
         }
 
         public void Draw(SpriteBatch spriteBatch, float size=1.0f)
