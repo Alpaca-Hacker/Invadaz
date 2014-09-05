@@ -9,23 +9,36 @@ namespace Invadaz
 {
     public class EnemyController
     {
+ 
         public int EnemysLeft { get; set; }
         int step = 1;
 
         private List<Sprite> _gameObjects;
-        private int _direction = 1;
+        private Texture2D[] _textures ;
+        private Rectangle _gameBounds;
+        private int _direction;
         private bool _hasHit;
 
-        public void Startup(Rectangle gameBounds, Texture2D[] textures, List<Sprite> game)
+       public EnemyController(Rectangle gameBounds, Texture2D[] textures, List<Sprite> gameObjects)
         {
-            _gameObjects = game;
+            _gameObjects = gameObjects;
+            _gameBounds = gameBounds;
+            _textures = new Texture2D[textures.Length];
+            textures.CopyTo(_textures,0);
+
+        }
+
+        public void Startup()
+        {
+           
             var location = new Vector2(0, 50);
             EnemysLeft = 0;
+            _direction = 1;
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 1; j < 10; j++)
                 {
-                    var enemy = new Enemy(textures[i], 6, 1, gameBounds, 3);
+                    var enemy = new Enemy(_textures[i], 6, 1, _gameBounds, 3);
                     _gameObjects.Add(enemy);
                     enemy.Location = location;
                     location.X += 50;
@@ -65,15 +78,5 @@ namespace Invadaz
             }
         }
 
-        //public void Draw(SpriteBatch spriteBatch)
-        //{
-        //    for (int i = 0; i < Enemies.Length; i++)
-        //    {
-        //        if (Enemies[i] != null)
-        //        {
-        //            Enemies[i].Draw(spriteBatch);
-        //        }
-        //    }
-        //}
     }
 }

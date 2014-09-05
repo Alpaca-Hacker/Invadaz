@@ -16,6 +16,8 @@ namespace Invadaz
         private int _currentFrame;
         private int _totalFrames;
         private int _anim;
+        public int Width;
+        public int Height;
 
         public Vector2 Location { get; set; } 
 
@@ -29,8 +31,16 @@ namespace Invadaz
             _anim = 1;
             _timing = timing;
             Location = Vector2.Zero;
+            Width = _texture.Width / _columns;
+            Height = _texture.Height / _rows;
         }
-
+        public Rectangle BoundingBox
+        {
+            get
+            {
+                return new Rectangle((int)Location.X, (int)Location.Y, Width, Height);
+            }
+        }
 
         public virtual int Update(GameTime gameTime)
         {
@@ -54,13 +64,12 @@ namespace Invadaz
 
         public void Draw(SpriteBatch spriteBatch, float size=1.0f)
         {
-            int width = _texture.Width / _columns;
-            int height = _texture.Height / _rows;
+
             int row = (int)((float)_currentFrame / (float)_columns);
             int column = _currentFrame % _columns;
 
-            Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
-            Rectangle destinationRectangle = new Rectangle((int)Location.X, (int)Location.Y, (int)(width*size), (int)(height*size));
+            Rectangle sourceRectangle = new Rectangle(Width * column, Height * row, Width, Height);
+            Rectangle destinationRectangle = new Rectangle((int)Location.X, (int)Location.Y, (int)(Width*size), (int)(Height*size));
             
             spriteBatch.Draw(_texture, destinationRectangle, sourceRectangle, Color.White);
             

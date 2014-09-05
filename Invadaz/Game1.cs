@@ -18,7 +18,7 @@ namespace Invadaz
         Player player;
         EnemyController enemyController;
         private int lastFiredTicks = 0;
-        private Texture2D bulletTexture, ufoTexture;
+        private Texture2D bulletTexture, ufoTexture, explosionTexture;
         public List<Sprite> gameObjects = new List<Sprite>();
         Vector2 bulletOffset;
 
@@ -53,8 +53,9 @@ namespace Invadaz
                                             Content.Load<Texture2D>("Enemy5")
             };
             ufoTexture = Content.Load<Texture2D>("UFO");
-            enemyController = new EnemyController();
-            enemyController.Startup(gameBounds, enemyTextures, gameObjects);
+            explosionTexture = Content.Load<Texture2D>("Explosion");
+            enemyController = new EnemyController(gameBounds, enemyTextures, gameObjects);
+            enemyController.Startup();
             bulletTexture = Content.Load<Texture2D>("bullet");
             bulletOffset = new Vector2((float)((playerTexture.Width / 8) * .75 - bulletTexture.Width / 2), (float)-bulletTexture.Height);
             
@@ -80,7 +81,7 @@ namespace Invadaz
                 Exit();
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && lastFiredTicks == 0 && (gameObjects.FindAll(x => x.GetType().Name == "Bullet").Count <5))
             {
-                gameObjects.Add(new Bullet(bulletTexture, (player.Location + bulletOffset), enemyController, gameBounds));
+                gameObjects.Add(new Bullet(bulletTexture, (player.Location + bulletOffset), gameObjects, gameBounds, explosionTexture));
                 lastFiredTicks = 30;
             }
 
@@ -88,22 +89,18 @@ namespace Invadaz
             enemyController.Update(gameTime);
             if (gameObjects != null)
             {
-                var removeMe = new List<Sprite>();
-                foreach (var gameObject in gameObjects)
+                int length = gameObjects.Count;
+                Sprite[] currentObjects = new Sprite[length];
+                gameObjects.CopyTo(currentObjects);
+                foreach (var gameObject in currentObjects)
                 {
                     int check = gameObject.Update(gameTime);
                     if (check == 1)
                     {
-                        removeMe.Add(gameObject);
+                        gameObjects.Remove(gameObject);
                     }
                 }
-                if (removeMe != null)
-                {
-                    foreach (var del in removeMe)
-                    {
-                        gameObjects.Remove(del);
-                    }
-                }
+               
             }
             if (gameObjects.Find(x => x.GetType().Name == "Ufo") == null)
             {
@@ -112,6 +109,10 @@ namespace Invadaz
                 {
                     gameObjects.Add(new Ufo(ufoTexture, 4, 1, 2, gameBounds));
                 }
+            }
+            if (gameObjects.FindAll(x => x.GetType().Name == "Enemy").Count <= 0)
+            {
+                enemyController.Startup();
             }
             base.Update(gameTime);
         }
