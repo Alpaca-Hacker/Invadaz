@@ -21,6 +21,7 @@ namespace Invadaz
         private Texture2D bulletTexture, ufoTexture, explosionTexture;
         public List<Sprite> gameObjects = new List<Sprite>();
         Vector2 bulletOffset;
+        SpriteFont gameFont;
 
         public Game1()
             : base()
@@ -56,6 +57,7 @@ namespace Invadaz
             explosionTexture = Content.Load<Texture2D>("Explosion");
             enemyController = new EnemyController(gameBounds, enemyTextures, gameObjects);
             enemyController.Startup();
+            gameFont = Content.Load<SpriteFont>("GameFont20");
             bulletTexture = Content.Load<Texture2D>("bullet");
             bulletOffset = new Vector2((float)((playerTexture.Width / 8) * .75 - bulletTexture.Width / 2), (float)-bulletTexture.Height);
             
@@ -131,8 +133,9 @@ namespace Invadaz
                     gameObject.Draw(spriteBatch);
                 }
             }
+            
+            spriteBatch.DrawString(gameFont, "Score : 999999", new Vector2((gameBounds.Width / 2) - 50, gameBounds.Height - 25), Color.Wheat);
             spriteBatch.End();
-
             base.Draw(gameTime);
         }
 
