@@ -39,7 +39,7 @@ namespace Invadaz
                     _gameObjects.Remove(enemy);
                     var explosion = new Explosion(_explosionTexture, 1, 7, 4);
                     _gameObjects.Add(explosion);
-                    explosion.Location = this.Location-new Vector2(0,enemy.Height/2);
+                    explosion.Location = this.Location-new Vector2(enemy.Width/2,enemy.Height/2);
                     return 1;
                 }
             }
