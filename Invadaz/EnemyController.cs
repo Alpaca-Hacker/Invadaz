@@ -12,25 +12,26 @@ namespace Invadaz
         public int EnemysLeft { get; set; }
         int step = 1;
 
-        public Enemy[] Enemies = new Enemy[50];
-        private int direction = 1;
+        private List<Sprite> _gameObjects;
+        private int _direction = 1;
         private bool _hasHit;
 
-        public void Startup(Rectangle gameBounds, Texture2D[] textures)
+        public void Startup(Rectangle gameBounds, Texture2D[] textures, List<Sprite> game)
         {
+            _gameObjects = game;
             var location = new Vector2(0, 50);
             EnemysLeft = 0;
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 1; j < 10; j++)
                 {
-
-                    Enemies[EnemysLeft] = new Enemy(textures[i], 6, 1, gameBounds, 3);
-                    Enemies[EnemysLeft].Location = location;
+                    var enemy = new Enemy(textures[i], 6, 1, gameBounds, 3);
+                    _gameObjects.Add(enemy);
+                    enemy.Location = location;
                     location.X += 50;
                     EnemysLeft++;
-
                 }
+
                 location.Y += 40;
                 location.X = 0;
             }
@@ -38,44 +39,41 @@ namespace Invadaz
 
         public void Update(GameTime gameTime)
         {
-
+            List<Sprite> enemies = new List<Sprite>();
+            enemies = _gameObjects.FindAll(x => x.GetType().Name == "Enemy");
             if (!_hasHit)
             {
-                for (int i = 0; i < Enemies.Length; i++)
+                foreach (var enemy in enemies)
                 {
-                    if (Enemies[i] != null)
+                    int check = enemy.Walk(gameTime, _direction, step);
+                    if (check == 1)
                     {
-                        int check = Enemies[i].Update(gameTime, direction, step);
-                        if (check == 1)
-                        {
-                            _hasHit = true;
-                        }
+                        _hasHit = true;
                     }
                 }
             }
+        
             else
             {
-                for (int i = 0; i < Enemies.Length; i++)
+                foreach (var enemy in enemies)
                 {
-                    if (Enemies[i] != null)
-                    {
-                        Enemies[i].Update(gameTime, 0, step);
-                    }
+ 
+                        enemy.Walk(gameTime, 0, step);
                 }
-                direction = -direction;
+                _direction = -_direction;
                 _hasHit = false;
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            for (int i = 0; i < Enemies.Length; i++)
-            {
-                if (Enemies[i] != null)
-                {
-                    Enemies[i].Draw(spriteBatch);
-                }
-            }
-        }
+        //public void Draw(SpriteBatch spriteBatch)
+        //{
+        //    for (int i = 0; i < Enemies.Length; i++)
+        //    {
+        //        if (Enemies[i] != null)
+        //        {
+        //            Enemies[i].Draw(spriteBatch);
+        //        }
+        //    }
+        //}
     }
 }

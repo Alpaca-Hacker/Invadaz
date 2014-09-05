@@ -19,9 +19,9 @@ namespace Invadaz
          }
 
 
-      public int Update(GameTime gameTime, int direction, int timing=1)
+      public override int Walk(GameTime gameTime,int direction, int timing=1)
          {
-          base.Update(gameTime);
+
           if (gameTime.TotalGameTime.Ticks%timing !=0)
           {
               return 0;

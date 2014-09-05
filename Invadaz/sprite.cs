@@ -65,5 +65,10 @@ namespace Invadaz
             spriteBatch.Draw(_texture, destinationRectangle, sourceRectangle, Color.White);
             
         }
+
+        public virtual int Walk(GameTime gameTime, int _direction, int step)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

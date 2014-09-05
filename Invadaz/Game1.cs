@@ -18,7 +18,7 @@ namespace Invadaz
         Player player;
         EnemyController enemyController;
         private int lastFiredTicks = 0;
-        private Texture2D bulletTexture;
+        private Texture2D bulletTexture, ufoTexture;
         public List<Sprite> gameObjects = new List<Sprite>();
         Vector2 bulletOffset;
 
@@ -52,8 +52,9 @@ namespace Invadaz
                                             Content.Load<Texture2D>("Enemy4"),
                                             Content.Load<Texture2D>("Enemy5")
             };
+            ufoTexture = Content.Load<Texture2D>("UFO");
             enemyController = new EnemyController();
-            enemyController.Startup(gameBounds, enemyTextures);
+            enemyController.Startup(gameBounds, enemyTextures, gameObjects);
             bulletTexture = Content.Load<Texture2D>("bullet");
             bulletOffset = new Vector2((float)((playerTexture.Width / 8) * .75 - bulletTexture.Width / 2), (float)-bulletTexture.Height);
             
@@ -69,6 +70,7 @@ namespace Invadaz
 
         protected override void Update(GameTime gameTime)
         {
+
             if (lastFiredTicks>0)
             {
                 lastFiredTicks--;
@@ -103,6 +105,14 @@ namespace Invadaz
                     }
                 }
             }
+            if (gameObjects.Find(x => x.GetType().Name == "Ufo") == null)
+            {
+                var rnd = new Random();
+                if (rnd.Next(10000) < 25)
+                {
+                    gameObjects.Add(new Ufo(ufoTexture, 4, 1, 2, gameBounds));
+                }
+            }
             base.Update(gameTime);
         }
 
@@ -113,7 +123,6 @@ namespace Invadaz
 
             spriteBatch.Begin();
             player.Draw(spriteBatch, 0.75f);
-            enemyController.Draw(spriteBatch);
             if (gameObjects != null)
             {
                 foreach (var gameObject in gameObjects)
@@ -128,4 +137,3 @@ namespace Invadaz
 
     }
 }
-// gameObjects.Exists(x => x.GetType().Name == "Bullet")
