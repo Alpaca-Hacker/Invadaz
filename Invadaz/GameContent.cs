@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Invadaz
 {
-    class GameContent
+    public class GameContent
     {
         public Texture2D PlayerTexture { get; set; }
         public Texture2D BulletTexture { get; set; }

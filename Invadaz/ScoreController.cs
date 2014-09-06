@@ -12,10 +12,10 @@ namespace Invadaz
         private SpriteFont _gameFont;
         private Rectangle _gameBounds;
 
-        public ScoreController(SpriteFont gameFont, Rectangle gameBounds)
+        public ScoreController(GameObjects gameObjects)
         {
-            _gameFont = gameFont;
-            _gameBounds = gameBounds;
+            _gameFont = gameObjects.Content.GameFont;
+            _gameBounds = gameObjects.GameBounds;
         }
 
         public int Score { get; set; }

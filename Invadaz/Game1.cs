@@ -19,7 +19,6 @@ namespace Invadaz
         Player player;
         EnemyController enemyController;      
         List<Sprite> entities;
-        Vector2 bulletOffset;
         ScoreController score;
 
  private int lastFiredTicks = 0;
@@ -62,14 +61,12 @@ namespace Invadaz
             content.GameFont = Content.Load<SpriteFont>("GameFont20");
             content.BulletTexture = Content.Load<Texture2D>("bullet");
 
-            player = gameObjects.Player = new Player(content.PlayerTexture, 1, 4, gameBounds, 3);
+            player = gameObjects.Player = new Player(gameObjects, 1, 4, 3);
             player.Location = new Vector2(0, gameBounds.Height - 100);
-            enemyController = gameObjects.EnemyController = new EnemyController(gameBounds, content.EnemyTextures, entities);
+            enemyController = gameObjects.EnemyController = new EnemyController(gameObjects);
             enemyController.Startup();
-            bulletOffset = new Vector2((float)((content.PlayerTexture.Width / 8) * .75 
-                - content.BulletTexture.Width / 2), (float)-content.BulletTexture.Height);
 
-            score = gameObjects.Score = new ScoreController(content.GameFont, gameBounds);
+            score = gameObjects.Score = new ScoreController(gameObjects);
             score.Score = 0;
 
         }
@@ -84,20 +81,10 @@ namespace Invadaz
         protected override void Update(GameTime gameTime)
         {
 
-            if (lastFiredTicks>0)
-            {
-                lastFiredTicks--;
-            }
+
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && lastFiredTicks == 0 && (entities.FindAll(x => x.GetType().Name == "Bullet").Count <5))
-            {
-                var bullet = new Bullet(content.BulletTexture, score, entities, gameBounds, content.ExplosionTexture);
-                entities.Add(bullet);
-                bullet.Location = player.Location + bulletOffset;
-                lastFiredTicks = 30;
-            }
 
             player.Update(gameTime);
             enemyController.Update(gameTime);

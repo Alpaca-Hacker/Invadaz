@@ -12,18 +12,18 @@ namespace Invadaz
  
         int step = 1;
 
-        private List<Sprite> _gameObjects;
+        private List<Sprite> _emtities;
         private Texture2D[] _textures ;
         private Rectangle _gameBounds;
         private int _direction;
-        private bool _hasHit;
+        private bool _hasHitEdge;
 
-       public EnemyController(Rectangle gameBounds, Texture2D[] textures, List<Sprite> gameObjects)
+       public EnemyController(GameObjects gameObjects)
         {
-            _gameObjects = gameObjects;
-            _gameBounds = gameBounds;
-            _textures = new Texture2D[textures.Length];
-            textures.CopyTo(_textures,0);
+            _emtities = gameObjects.Entities;
+            _gameBounds = gameObjects.GameBounds;
+            _textures = new Texture2D[gameObjects.Content.EnemyTextures.Length];
+            gameObjects.Content.EnemyTextures.CopyTo(_textures,0);
 
         }
 
@@ -37,7 +37,7 @@ namespace Invadaz
                 for (int j = 1; j < 10; j++)
                 {
                     var enemy = new Enemy(_textures[i], 6, 1, _gameBounds, 3);
-                    _gameObjects.Add(enemy);
+                    _emtities.Add(enemy);
                     enemy.Location = location;
                     enemy.MyScore = (i * 25) + 50;
                     location.X += 50;
@@ -52,15 +52,15 @@ namespace Invadaz
         public void Update(GameTime gameTime)
         {
             List<Sprite> enemies = new List<Sprite>();
-            enemies = _gameObjects.FindAll(x => x.GetType().Name == "Enemy");
-            if (!_hasHit)
+            enemies = _emtities.FindAll(x => x.GetType().Name == "Enemy");
+            if (!_hasHitEdge)
             {
                 foreach (var enemy in enemies)
                 {
                     int check = enemy.Walk(gameTime, _direction, step);
                     if (check == 1)
                     {
-                        _hasHit = true;
+                        _hasHitEdge = true;
                     }
                 }
             }
@@ -73,7 +73,7 @@ namespace Invadaz
                         enemy.Walk(gameTime, 0, step);
                 }
                 _direction = -_direction;
-                _hasHit = false;
+                _hasHitEdge = false;
             }
         }
 

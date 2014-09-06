@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Invadaz
 {
-    class GameObjects
+    public class GameObjects
     {
         public Player Player { get; set; }
         public List<Sprite> Entities { get; set; }
