@@ -50,10 +50,10 @@ namespace Invadaz
             content.PlayerTexture = new SpriteTexture(Content.Load<Texture2D>("Player"),1,4,3);
             content.EnemyTextures = new SpriteTexture[]{
                 new SpriteTexture(Content.Load<Texture2D>("Enemy1"),6,1,3),
-                new SpriteTexture(Content.Load<Texture2D>("Enemy2"),6,1,3),
-                new SpriteTexture(Content.Load<Texture2D>("Enemy3"),6,1,3),
-                new SpriteTexture(Content.Load<Texture2D>("Enemy4"),6,1,3),
-                new SpriteTexture(Content.Load<Texture2D>("Enemy5"),6,1,3),                                          
+                new SpriteTexture(Content.Load<Texture2D>("Enemy2"),6,1,5),
+                new SpriteTexture(Content.Load<Texture2D>("Enemy3"),6,1,2),
+                new SpriteTexture(Content.Load<Texture2D>("Enemy4"),6,1,6),
+                new SpriteTexture(Content.Load<Texture2D>("Enemy5"),6,1,5),                                          
                                             };
 
             content.UfoTexture = new SpriteTexture(Content.Load<Texture2D>("UFO"),4,1,2);
