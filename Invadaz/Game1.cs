@@ -13,15 +13,13 @@ namespace Invadaz
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        GameContent content;
         Rectangle gameBounds;
         Player player;
         EnemyController enemyController;
         private int lastFiredTicks = 0;
-        private Texture2D bulletTexture, ufoTexture, explosionTexture;
         public List<Sprite> gameObjects = new List<Sprite>();
         Vector2 bulletOffset;
-        SpriteFont gameFont;
         ScoreController score;
 
         public Game1()
@@ -45,23 +43,29 @@ namespace Invadaz
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             gameBounds = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
-            var playerTexture = Content.Load<Texture2D>("Player");
-            player = new Player(playerTexture, 1, 4, gameBounds, 3);
+            content = new GameContent();
+            content.PlayerTexture = Content.Load<Texture2D>("Player");
+            content.EnemyTextures = new Texture2D[]{
+                                             Content.Load<Texture2D>("Enemy1"),
+                                             Content.Load<Texture2D>("Enemy2"),
+                                             Content.Load<Texture2D>("Enemy3"),
+                                             Content.Load<Texture2D>("Enemy4"),
+                                             Content.Load<Texture2D>("Enemy5")
+                                            };
+
+            content.UfoTexture = Content.Load<Texture2D>("UFO");
+            content.ExplosionTexture = Content.Load<Texture2D>("Explosion");
+            content.GameFont = Content.Load<SpriteFont>("GameFont20");
+            content.BulletTexture = Content.Load<Texture2D>("bullet");
+
+            player = new Player(content.PlayerTexture, 1, 4, gameBounds, 3);
             player.Location = new Vector2(0, gameBounds.Height - 100);
-            Texture2D[] enemyTextures = {Content.Load<Texture2D>("Enemy1"),
-                                            Content.Load<Texture2D>("Enemy2"),
-                                            Content.Load<Texture2D>("Enemy3"),
-                                            Content.Load<Texture2D>("Enemy4"),
-                                            Content.Load<Texture2D>("Enemy5")
-            };
-            ufoTexture = Content.Load<Texture2D>("UFO");
-            explosionTexture = Content.Load<Texture2D>("Explosion");
-            enemyController = new EnemyController(gameBounds, enemyTextures, gameObjects);
+            enemyController = new EnemyController(gameBounds, content.EnemyTextures, gameObjects);
             enemyController.Startup();
-            gameFont = Content.Load<SpriteFont>("GameFont20");
-            bulletTexture = Content.Load<Texture2D>("bullet");
-            bulletOffset = new Vector2((float)((playerTexture.Width / 8) * .75 - bulletTexture.Width / 2), (float)-bulletTexture.Height);
-            score = new ScoreController(gameFont, gameBounds);
+            bulletOffset = new Vector2((float)((content.PlayerTexture.Width / 8) * .75 
+                - content.BulletTexture.Width / 2), (float)-content.BulletTexture.Height);
+
+            score = new ScoreController(content.GameFont, gameBounds);
             score.Score = 0;
 
         }
@@ -85,7 +89,7 @@ namespace Invadaz
                 Exit();
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && lastFiredTicks == 0 && (gameObjects.FindAll(x => x.GetType().Name == "Bullet").Count <5))
             {
-                var bullet = new Bullet(bulletTexture, score, gameObjects, gameBounds, explosionTexture);
+                var bullet = new Bullet(content.BulletTexture, score, gameObjects, gameBounds, content.ExplosionTexture);
                 gameObjects.Add(bullet);
                 bullet.Location = player.Location + bulletOffset;
                 lastFiredTicks = 30;
@@ -113,7 +117,7 @@ namespace Invadaz
                 var rnd = new Random();
                 if (rnd.Next(10000) < 25)
                 {
-                    gameObjects.Add(new Ufo(ufoTexture, 4, 1, 2, gameBounds));
+                    gameObjects.Add(new Ufo(content.UfoTexture, 4, 1, 2, gameBounds));
                 }
             }
             if (gameObjects.FindAll(x => x.GetType().Name == "Enemy").Count <= 0)
