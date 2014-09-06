@@ -12,18 +12,20 @@ namespace Invadaz
  
         int step = 1;
 
-        private List<Sprite> _emtities;
+        private List<Sprite> _entities;
         private SpriteTexture[] _textures ;
         private Rectangle _gameBounds;
         private int _direction;
         private bool _hasHitEdge;
+        private GameObjects _gameObjects;
 
        public EnemyController(GameObjects gameObjects)
         {
-            _emtities = gameObjects.Entities;
+            _entities = gameObjects.Entities;
             _gameBounds = gameObjects.GameBounds;
             _textures = new SpriteTexture[gameObjects.Content.EnemyTextures.Length];
             gameObjects.Content.EnemyTextures.CopyTo(_textures,0);
+            _gameObjects = gameObjects;
 
         }
 
@@ -37,7 +39,7 @@ namespace Invadaz
                 for (int j = 1; j < 10; j++)
                 {
                     var enemy = new Enemy(_textures[i], _gameBounds);
-                    _emtities.Add(enemy);
+                    _entities.Add(enemy);
                     enemy.Location = location;
                     enemy.MyScore = (i * 25) + 50;
                     location.X += 50;
@@ -51,8 +53,8 @@ namespace Invadaz
 
         public void Update(GameTime gameTime)
         {
-            List<Sprite> enemies = new List<Sprite>();
-            enemies = _emtities.FindAll(x => x.GetType().Name == "Enemy");
+            var enemies = new List<Sprite>();
+            enemies = _entities.FindAll(x => x.GetType().Name == "Enemy");
             if (!_hasHitEdge)
             {
                 foreach (var enemy in enemies)
@@ -74,6 +76,27 @@ namespace Invadaz
                 }
                 _direction = -_direction;
                 _hasHitEdge = false;
+            }
+            var rnd = new Random();
+            if (rnd.Next(1000)<50)
+            {
+                var shooter= enemies[rnd.Next(enemies.Count)];
+                bool canShoot=true;
+                foreach (var enemy in enemies)
+                {
+                    if (shooter.Location.X == enemy.Location.X && shooter.Location.Y < enemy.Location.Y)
+                    {
+                        canShoot = false;
+                        break;
+                    }
+                }
+                if (canShoot)
+                {
+                    var bomb = new Bomb(_gameObjects);
+                    bomb.Location = shooter.Location+new Vector2(shooter.Width/2,shooter.Height);
+                    _entities.Add(bomb);
+                }
+                
             }
         }
 

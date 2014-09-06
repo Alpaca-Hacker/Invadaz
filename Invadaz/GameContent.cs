@@ -15,6 +15,7 @@ namespace Invadaz
         public SpriteTexture UfoTexture { get; set; }
         public SpriteTexture ExplosionTexture { get; set; }
         public SpriteTexture[] EnemyTextures { get; set; }
+        public SpriteTexture BombTexture { get; set; }
 
         public SpriteFont GameFont { get; set; }
 

@@ -1,13 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace Invadaz
 {
-    public class Sprite
+    public class Sprite : IEnumerable
     {
         protected Texture2D _texture;
         private int _rows;
@@ -77,6 +78,12 @@ namespace Invadaz
         }
 
         public virtual int Walk(GameTime gameTime, int _direction, int step)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        IEnumerator IEnumerable.GetEnumerator()
         {
             throw new NotImplementedException();
         }

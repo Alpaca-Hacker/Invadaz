@@ -21,7 +21,6 @@ namespace Invadaz
         List<Sprite> entities;
         ScoreController score;
 
- private int lastFiredTicks = 0;
 
         public Game1()
             : base()
@@ -60,6 +59,7 @@ namespace Invadaz
             content.ExplosionTexture = new SpriteTexture (Content.Load<Texture2D>("Explosion"),1,7,4);
             content.GameFont = Content.Load<SpriteFont>("GameFont20");
             content.BulletTexture = new SpriteTexture(Content.Load<Texture2D>("bullet"),1,1,1);
+            content.BombTexture = new SpriteTexture(Content.Load<Texture2D>("Bomb"), 1, 2, 5);
 
             player = gameObjects.Player = new Player(gameObjects);
             player.Location = new Vector2(0, gameBounds.Height - 100);
