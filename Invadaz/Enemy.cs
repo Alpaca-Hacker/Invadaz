@@ -18,6 +18,7 @@ namespace Invadaz
              _gameBounds = gameBounds;
          }
 
+        
 
       public override int Walk(GameTime gameTime,int direction, int timing=1)
          {

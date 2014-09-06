@@ -10,7 +10,6 @@ namespace Invadaz
     public class EnemyController
     {
  
-        public int EnemysLeft { get; set; }
         int step = 1;
 
         private List<Sprite> _gameObjects;
@@ -32,7 +31,6 @@ namespace Invadaz
         {
            
             var location = new Vector2(0, 50);
-            EnemysLeft = 0;
             _direction = 1;
             for (int i = 0; i < 5; i++)
             {
@@ -41,8 +39,9 @@ namespace Invadaz
                     var enemy = new Enemy(_textures[i], 6, 1, _gameBounds, 3);
                     _gameObjects.Add(enemy);
                     enemy.Location = location;
+                    enemy.MyScore = (i * 25) + 50;
                     location.X += 50;
-                    EnemysLeft++;
+ 
                 }
 
                 location.Y += 40;

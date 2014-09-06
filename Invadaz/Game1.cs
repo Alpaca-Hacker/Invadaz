@@ -22,6 +22,7 @@ namespace Invadaz
         public List<Sprite> gameObjects = new List<Sprite>();
         Vector2 bulletOffset;
         SpriteFont gameFont;
+        ScoreController score;
 
         public Game1()
             : base()
@@ -60,7 +61,8 @@ namespace Invadaz
             gameFont = Content.Load<SpriteFont>("GameFont20");
             bulletTexture = Content.Load<Texture2D>("bullet");
             bulletOffset = new Vector2((float)((playerTexture.Width / 8) * .75 - bulletTexture.Width / 2), (float)-bulletTexture.Height);
-            
+            score = new ScoreController(gameFont, gameBounds);
+            score.Score = 0;
 
         }
 
@@ -83,7 +85,9 @@ namespace Invadaz
                 Exit();
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && lastFiredTicks == 0 && (gameObjects.FindAll(x => x.GetType().Name == "Bullet").Count <5))
             {
-                gameObjects.Add(new Bullet(bulletTexture, (player.Location + bulletOffset), gameObjects, gameBounds, explosionTexture));
+                var bullet = new Bullet(bulletTexture, score, gameObjects, gameBounds, explosionTexture);
+                gameObjects.Add(bullet);
+                bullet.Location = player.Location + bulletOffset;
                 lastFiredTicks = 30;
             }
 
@@ -133,8 +137,8 @@ namespace Invadaz
                     gameObject.Draw(spriteBatch);
                 }
             }
+            score.Draw(spriteBatch);
             
-            spriteBatch.DrawString(gameFont, "Score : 999999", new Vector2((gameBounds.Width / 2) - 50, gameBounds.Height - 25), Color.Wheat);
             spriteBatch.End();
             base.Draw(gameTime);
         }

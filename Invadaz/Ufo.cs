@@ -16,6 +16,16 @@ namespace Invadaz
             _gameBounds = gameBounds;
         }
 
+        public  override int MyScore
+        {
+            get
+            {
+                var rnd = new Random();
+
+                return (rnd.Next(1,5) * 100);
+            }
+        }
+
         public override int Update(GameTime gameTime)
         {
             base.Update(gameTime);

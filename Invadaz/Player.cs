@@ -35,7 +35,6 @@ namespace Invadaz
             }
             this.Location = location;
   
-
             base.Update(gameTime);
 
         }

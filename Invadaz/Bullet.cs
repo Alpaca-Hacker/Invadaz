@@ -12,10 +12,11 @@ namespace Invadaz
         List<Sprite> _gameObjects;
         Rectangle _gameBounds;
         Texture2D _explosionTexture;
+        ScoreController _score;
 
-        public Bullet(Texture2D texture,Vector2 location, List <Sprite> gameObjects, Rectangle gameBounds, Texture2D explosionTexture) :base (texture,1,1,1)
+        public Bullet(Texture2D texture,ScoreController score, List <Sprite> gameObjects, Rectangle gameBounds, Texture2D explosionTexture) :base (texture,1,1,1)
         {
-            this.Location = location;
+            _score = score;
             _gameObjects = gameObjects;
             _gameBounds = gameBounds;
             _explosionTexture = explosionTexture;
@@ -40,6 +41,7 @@ namespace Invadaz
                     var explosion = new Explosion(_explosionTexture, 1, 7, 4);
                     _gameObjects.Add(explosion);
                     explosion.Location = this.Location-new Vector2(enemy.Width/2,enemy.Height/2);
+                    _score.Score += enemy.MyScore;
                     return 1;
                 }
             }
