@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Invadaz
 {
-    public class Sprite : IEnumerable
+    public class Sprite
     {
         protected Texture2D _texture;
         private int _rows;
@@ -20,7 +20,7 @@ namespace Invadaz
         public int Width;
         public int Height;
 
-        public Vector2 Location { get; set; } 
+        public Vector2 Location { get; set; }
 
         public Sprite(SpriteTexture spriteTexture)
         {
@@ -28,7 +28,7 @@ namespace Invadaz
             _currentFrame = 0;
             _rows = spriteTexture.Rows;
             _columns = spriteTexture.Columns;
-            _totalFrames = _rows*_columns;
+            _totalFrames = _rows * _columns;
             _anim = 1;
             _timing = spriteTexture.Timing;
             Location = Vector2.Zero;
@@ -46,9 +46,9 @@ namespace Invadaz
 
         public virtual int Update(GameTime gameTime)
         {
-           
-            if (gameTime.TotalGameTime.Ticks % _timing == 0 && _totalFrames >1)
-            { 
+
+            if (gameTime.TotalGameTime.Ticks % _timing == 0 && _totalFrames > 1)
+            {
                 _currentFrame += _anim;
                 if (_currentFrame < 0)
                 {
@@ -64,17 +64,17 @@ namespace Invadaz
             return 0;
         }
 
-        public void Draw(SpriteBatch spriteBatch, float size=1.0f)
+        public void Draw(SpriteBatch spriteBatch, float size = 1.0f)
         {
 
             int row = (int)((float)_currentFrame / (float)_columns);
             int column = _currentFrame % _columns;
 
             Rectangle sourceRectangle = new Rectangle(Width * column, Height * row, Width, Height);
-            Rectangle destinationRectangle = new Rectangle((int)Location.X, (int)Location.Y, (int)(Width*size), (int)(Height*size));
-            
+            Rectangle destinationRectangle = new Rectangle((int)Location.X, (int)Location.Y, (int)(Width * size), (int)(Height * size));
+
             spriteBatch.Draw(_texture, destinationRectangle, sourceRectangle, Color.White);
-            
+
         }
 
         public virtual int Walk(GameTime gameTime, int _direction, int step)
@@ -82,10 +82,6 @@ namespace Invadaz
             throw new NotImplementedException();
         }
 
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
     }
+
 }
