@@ -14,13 +14,15 @@ namespace Invadaz
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         GameContent content;
+        GameObjects gameObjects;
         Rectangle gameBounds;
         Player player;
-        EnemyController enemyController;
-        private int lastFiredTicks = 0;
-        public List<Sprite> gameObjects = new List<Sprite>();
+        EnemyController enemyController;      
+        List<Sprite> entities;
         Vector2 bulletOffset;
         ScoreController score;
+
+ private int lastFiredTicks = 0;
 
         public Game1()
             : base()
@@ -42,8 +44,10 @@ namespace Invadaz
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            gameBounds = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
-            content = new GameContent();
+            gameObjects = new GameObjects();
+            entities = gameObjects.Entities = new List<Sprite>();
+            gameBounds = gameObjects.GameBounds = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
+            content = gameObjects.Content = new GameContent();
             content.PlayerTexture = Content.Load<Texture2D>("Player");
             content.EnemyTextures = new Texture2D[]{
                                              Content.Load<Texture2D>("Enemy1"),
@@ -58,14 +62,14 @@ namespace Invadaz
             content.GameFont = Content.Load<SpriteFont>("GameFont20");
             content.BulletTexture = Content.Load<Texture2D>("bullet");
 
-            player = new Player(content.PlayerTexture, 1, 4, gameBounds, 3);
+            player = gameObjects.Player = new Player(content.PlayerTexture, 1, 4, gameBounds, 3);
             player.Location = new Vector2(0, gameBounds.Height - 100);
-            enemyController = new EnemyController(gameBounds, content.EnemyTextures, gameObjects);
+            enemyController = gameObjects.EnemyController = new EnemyController(gameBounds, content.EnemyTextures, entities);
             enemyController.Startup();
             bulletOffset = new Vector2((float)((content.PlayerTexture.Width / 8) * .75 
                 - content.BulletTexture.Width / 2), (float)-content.BulletTexture.Height);
 
-            score = new ScoreController(content.GameFont, gameBounds);
+            score = gameObjects.Score = new ScoreController(content.GameFont, gameBounds);
             score.Score = 0;
 
         }
@@ -87,40 +91,40 @@ namespace Invadaz
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && lastFiredTicks == 0 && (gameObjects.FindAll(x => x.GetType().Name == "Bullet").Count <5))
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && lastFiredTicks == 0 && (entities.FindAll(x => x.GetType().Name == "Bullet").Count <5))
             {
-                var bullet = new Bullet(content.BulletTexture, score, gameObjects, gameBounds, content.ExplosionTexture);
-                gameObjects.Add(bullet);
+                var bullet = new Bullet(content.BulletTexture, score, entities, gameBounds, content.ExplosionTexture);
+                entities.Add(bullet);
                 bullet.Location = player.Location + bulletOffset;
                 lastFiredTicks = 30;
             }
 
             player.Update(gameTime);
             enemyController.Update(gameTime);
-            if (gameObjects != null)
+            if (entities != null)
             {
-                int length = gameObjects.Count;
+                int length = entities.Count;
                 Sprite[] currentObjects = new Sprite[length];
-                gameObjects.CopyTo(currentObjects);
+                entities.CopyTo(currentObjects);
                 foreach (var gameObject in currentObjects)
                 {
                     int check = gameObject.Update(gameTime);
                     if (check == 1)
                     {
-                        gameObjects.Remove(gameObject);
+                        entities.Remove(gameObject);
                     }
                 }
                
             }
-            if (gameObjects.Find(x => x.GetType().Name == "Ufo") == null)
+            if (entities.Find(x => x.GetType().Name == "Ufo") == null)
             {
                 var rnd = new Random();
                 if (rnd.Next(10000) < 25)
                 {
-                    gameObjects.Add(new Ufo(content.UfoTexture, 4, 1, 2, gameBounds));
+                    entities.Add(new Ufo(content.UfoTexture, 4, 1, 2, gameBounds));
                 }
             }
-            if (gameObjects.FindAll(x => x.GetType().Name == "Enemy").Count <= 0)
+            if (entities.FindAll(x => x.GetType().Name == "Enemy").Count <= 0)
             {
                 enemyController.Startup();
             }
@@ -134,9 +138,9 @@ namespace Invadaz
 
             spriteBatch.Begin();
             player.Draw(spriteBatch, 0.75f);
-            if (gameObjects != null)
+            if (entities != null)
             {
-                foreach (var gameObject in gameObjects)
+                foreach (var gameObject in entities)
                 {
                     gameObject.Draw(spriteBatch);
                 }
