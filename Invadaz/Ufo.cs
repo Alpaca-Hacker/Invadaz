@@ -11,9 +11,9 @@ namespace Invadaz
     {
         Rectangle _gameBounds;
 
-        public Ufo (Texture2D texture, int rows, int columns,int timing, Rectangle gameBounds) : base (texture,rows,columns, timing)
+        public Ufo (GameObjects gameObjects) : base (gameObjects.Content.UfoTexture)
         {
-            _gameBounds = gameBounds;
+            _gameBounds = gameObjects.GameBounds;
         }
 
         public  override int MyScore

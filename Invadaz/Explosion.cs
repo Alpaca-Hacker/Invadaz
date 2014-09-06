@@ -11,10 +11,10 @@ namespace Invadaz
     {
         private int _currentFrame, _maxFrames;
  
-        public Explosion (Texture2D texture,int rows, int columns, int timing):base (texture,rows,columns, timing)
+        public Explosion (SpriteTexture texture):base (texture)
         {
             _currentFrame = 0;
-            _maxFrames = (rows * columns)*timing;
+            _maxFrames = (texture.Rows * texture.Columns)*texture.Timing;
         }
 
         public override int Update(GameTime gameTime)

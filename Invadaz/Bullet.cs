@@ -11,10 +11,10 @@ namespace Invadaz
     {
         List<Sprite> _entities;
         Rectangle _gameBounds;
-        Texture2D _explosionTexture;
+        SpriteTexture _explosionTexture;
         ScoreController _score;
 
-        public Bullet(GameObjects gameObjects) :base (gameObjects.Content.BulletTexture,1,1,1)
+        public Bullet(GameObjects gameObjects) :base (gameObjects.Content.BulletTexture)
         {
             _score = gameObjects.Score;
             _entities = gameObjects.Entities;
@@ -41,7 +41,7 @@ namespace Invadaz
                 if (BoundingBox.Intersects(enemy.BoundingBox))
                 {
                     _entities.Remove(enemy);
-                    var explosion = new Explosion(_explosionTexture, 1, 7, 4);
+                    var explosion = new Explosion(_explosionTexture);
                     _entities.Add(explosion);
                     explosion.Location = this.Location-new Vector2(enemy.Width/2,enemy.Height/2);
                     _score.Score += enemy.MyScore;

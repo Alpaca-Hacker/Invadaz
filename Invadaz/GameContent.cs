@@ -10,11 +10,11 @@ namespace Invadaz
 {
     public class GameContent
     {
-        public Texture2D PlayerTexture { get; set; }
-        public Texture2D BulletTexture { get; set; }
-        public Texture2D UfoTexture { get; set; }
-        public Texture2D ExplosionTexture { get; set; }
-        public Texture2D[] EnemyTextures { get; set; }
+        public SpriteTexture PlayerTexture { get; set; }
+        public SpriteTexture BulletTexture { get; set; }
+        public SpriteTexture UfoTexture { get; set; }
+        public SpriteTexture ExplosionTexture { get; set; }
+        public SpriteTexture[] EnemyTextures { get; set; }
 
         public SpriteFont GameFont { get; set; }
 

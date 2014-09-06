@@ -16,8 +16,8 @@ namespace Invadaz
         private const int _moveSpeed = 3;
         private int _lastFiredTicks = 0;
 
-        public Player(GameObjects gameObjects, int rows, int columns,int timing = 1 ) 
-            :base (gameObjects.Content.PlayerTexture,rows,columns,timing)
+        public Player(GameObjects gameObjects) 
+            :base (gameObjects.Content.PlayerTexture)
         {
             _gameObjects = gameObjects;
         }

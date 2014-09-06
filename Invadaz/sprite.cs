@@ -21,15 +21,15 @@ namespace Invadaz
 
         public Vector2 Location { get; set; } 
 
-        public Sprite(Texture2D texture, int rows, int columns, int timing = 2)
+        public Sprite(SpriteTexture spriteTexture)
         {
-            _texture = texture;
+            _texture = spriteTexture.Texture;
             _currentFrame = 0;
-            _rows = rows;
-            _columns = columns;
+            _rows = spriteTexture.Rows;
+            _columns = spriteTexture.Columns;
             _totalFrames = _rows*_columns;
             _anim = 1;
-            _timing = timing;
+            _timing = spriteTexture.Timing;
             Location = Vector2.Zero;
             Width = _texture.Width / _columns;
             Height = _texture.Height / _rows;

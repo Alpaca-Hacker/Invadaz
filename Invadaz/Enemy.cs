@@ -12,8 +12,8 @@ namespace Invadaz
          private Rectangle _gameBounds;
 
 
-         public Enemy(Texture2D texture, int rows, int columns, Rectangle gameBounds,int timing = 1 ) 
-            :base (texture,rows,columns,timing)
+         public Enemy(SpriteTexture texture, Rectangle gameBounds ) 
+            :base (texture)
          {
              _gameBounds = gameBounds;
          }

@@ -47,21 +47,21 @@ namespace Invadaz
             entities = gameObjects.Entities = new List<Sprite>();
             gameBounds = gameObjects.GameBounds = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
             content = gameObjects.Content = new GameContent();
-            content.PlayerTexture = Content.Load<Texture2D>("Player");
-            content.EnemyTextures = new Texture2D[]{
-                                             Content.Load<Texture2D>("Enemy1"),
-                                             Content.Load<Texture2D>("Enemy2"),
-                                             Content.Load<Texture2D>("Enemy3"),
-                                             Content.Load<Texture2D>("Enemy4"),
-                                             Content.Load<Texture2D>("Enemy5")
+            content.PlayerTexture = new SpriteTexture(Content.Load<Texture2D>("Player"),1,4,3);
+            content.EnemyTextures = new SpriteTexture[]{
+                new SpriteTexture(Content.Load<Texture2D>("Enemy1"),6,1,3),
+                new SpriteTexture(Content.Load<Texture2D>("Enemy2"),6,1,3),
+                new SpriteTexture(Content.Load<Texture2D>("Enemy3"),6,1,3),
+                new SpriteTexture(Content.Load<Texture2D>("Enemy4"),6,1,3),
+                new SpriteTexture(Content.Load<Texture2D>("Enemy5"),6,1,3),                                          
                                             };
 
-            content.UfoTexture = Content.Load<Texture2D>("UFO");
-            content.ExplosionTexture = Content.Load<Texture2D>("Explosion");
+            content.UfoTexture = new SpriteTexture(Content.Load<Texture2D>("UFO"),4,1,2);
+            content.ExplosionTexture = new SpriteTexture (Content.Load<Texture2D>("Explosion"),1,7,4);
             content.GameFont = Content.Load<SpriteFont>("GameFont20");
-            content.BulletTexture = Content.Load<Texture2D>("bullet");
+            content.BulletTexture = new SpriteTexture(Content.Load<Texture2D>("bullet"),1,1,1);
 
-            player = gameObjects.Player = new Player(gameObjects, 1, 4, 3);
+            player = gameObjects.Player = new Player(gameObjects);
             player.Location = new Vector2(0, gameBounds.Height - 100);
             enemyController = gameObjects.EnemyController = new EnemyController(gameObjects);
             enemyController.Startup();
@@ -108,7 +108,7 @@ namespace Invadaz
                 var rnd = new Random();
                 if (rnd.Next(10000) < 25)
                 {
-                    entities.Add(new Ufo(content.UfoTexture, 4, 1, 2, gameBounds));
+                    entities.Add(new Ufo(gameObjects));
                 }
             }
             if (entities.FindAll(x => x.GetType().Name == "Enemy").Count <= 0)
