@@ -22,9 +22,8 @@ namespace Invadaz
 
         public void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().GetPressedKeys().Length != 0)
-            {
-                _game.IsRunning = true;
+            if (Keyboard.GetState().GetPressedKeys().Length == 0)
+            {      
                 return;
             }
             var score = _gameObjects.Score;
@@ -33,6 +32,7 @@ namespace Invadaz
             _gameObjects.Entities.Clear();
             _gameObjects.EnemyController.Startup();
             NewPlayer();
+            _game.IsRunning = true;
         }
 
        public void NewPlayer()
