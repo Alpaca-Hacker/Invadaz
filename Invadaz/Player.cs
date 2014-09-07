@@ -45,7 +45,7 @@ namespace Invadaz
                     var player = _gameObjects.Player = new Player(_gameObjects);
                     _gameObjects.Entities.Add(player);
                     player.Location = new Vector2(0, _gameObjects.GameBounds.Height - 100);
-                    // Lives --
+                    _gameObjects.Score.Lives--;
                     return 1;
                 }
 
@@ -94,7 +94,6 @@ namespace Invadaz
             _isDead = true;
             _lastFiredTicks = 100;
             IsVisible = false;
-            // Lives -1
         }
 
 

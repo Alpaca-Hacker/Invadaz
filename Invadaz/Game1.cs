@@ -34,6 +34,9 @@ namespace Invadaz
         {
             // TODO: Add your initialization logic here
             IsMouseVisible = true;
+            gameObjects = new GameObjects();
+            entities = gameObjects.Entities = new List<Sprite>();
+            gameBounds = gameObjects.GameBounds = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
             base.Initialize();
         }
 
@@ -42,9 +45,7 @@ namespace Invadaz
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            gameObjects = new GameObjects();
-            entities = gameObjects.Entities = new List<Sprite>();
-            gameBounds = gameObjects.GameBounds = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
+ 
             content = gameObjects.Content = new GameContent();
             content.PlayerTexture = new SpriteTexture(Content.Load<Texture2D>("Player"),1,4,3);
             content.EnemyTextures = new SpriteTexture[]{
@@ -70,6 +71,7 @@ namespace Invadaz
 
             score = gameObjects.Score = new ScoreController(gameObjects);
             score.Score = 0;
+            score.Lives = 3;
 
         }
 
