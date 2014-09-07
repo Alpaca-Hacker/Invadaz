@@ -92,6 +92,7 @@ namespace Invadaz
             _isDead = true;
             _lastFiredTicks = 100;
             IsVisible = false;
+            _gameObjects.Content.ExplosionBigSound.Play();
         }
 
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 
 namespace Invadaz
@@ -20,6 +21,10 @@ namespace Invadaz
 
         public SpriteFont GameFont { get; set; }
         public SpriteFont TitleFont { get; set; }
+
+        public SoundEffect ExplosionBigSound { get; set; }
+        public SoundEffect ExplosionSmallSound { get; set; }
+        public SoundEffect ShootSound { get; set; }
     }
 
 }

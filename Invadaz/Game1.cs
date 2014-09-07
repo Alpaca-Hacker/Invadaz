@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using System;
 using System.Collections.Generic;
 
@@ -67,6 +68,9 @@ namespace Invadaz
             content.BulletTexture = new SpriteTexture(Content.Load<Texture2D>("bullet"),1,1,1);
             content.BombTexture = new SpriteTexture(Content.Load<Texture2D>("Bomb"), 1, 2, 5);
             content.TitleFont = Content.Load<SpriteFont>("LargeFont96");
+            content.ExplosionBigSound = Content.Load<SoundEffect>("ExplosionBig");
+            content.ExplosionSmallSound = Content.Load<SoundEffect>("ExplosionSmall");
+            content.ShootSound = Content.Load<SoundEffect>("Shoot");
 
 
         }
