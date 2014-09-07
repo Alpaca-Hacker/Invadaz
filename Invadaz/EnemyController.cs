@@ -13,7 +13,6 @@ namespace Invadaz
         int step = 1;
 
         private List<Sprite> _entities;
-        private SpriteTexture[] _textures ;
         private Rectangle _gameBounds;
         private int _direction;
         private bool _hasHitEdge;
@@ -23,14 +22,15 @@ namespace Invadaz
         {
             _entities = gameObjects.Entities;
             _gameBounds = gameObjects.GameBounds;
-            _textures = new SpriteTexture[gameObjects.Content.EnemyTextures.Length];
-            gameObjects.Content.EnemyTextures.CopyTo(_textures,0);
+
             _gameObjects = gameObjects;
 
         }
 
         public void Startup()
         {
+            var textures = new SpriteTexture[_gameObjects.Content.EnemyTextures.Length];
+            _gameObjects.Content.EnemyTextures.CopyTo(textures,0);            
            
             var location = new Vector2(0, 50);
             _direction = 1;
@@ -38,7 +38,7 @@ namespace Invadaz
             {
                 for (int j = 1; j < 10; j++)
                 {
-                    var enemy = new Enemy(_textures[i], _gameBounds);
+                    var enemy = new Enemy(textures[i], _gameBounds);
                     _entities.Add(enemy);
                     enemy.Location = location;
                     enemy.MyScore = (i * 25) + 50;
@@ -72,7 +72,11 @@ namespace Invadaz
                 foreach (var enemy in enemies)
                 {
  
-                        enemy.Walk(gameTime, 0, step);
+                      int check = enemy.Walk(gameTime, 0, step);
+                    if (check == -1)
+                    {
+                        _gameObjects.Score.Lives = -1;
+                    }
                 }
                 _direction = -_direction;
                 _hasHitEdge = false;

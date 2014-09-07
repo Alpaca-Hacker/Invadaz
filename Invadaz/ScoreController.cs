@@ -9,14 +9,12 @@ namespace Invadaz
 {
     public class ScoreController
     {
-        private SpriteFont _gameFont;
         private Rectangle _gameBounds;
         private GameObjects _gameObjects;
         private int _lives;
 
         public ScoreController(GameObjects gameObjects)
         {
-            _gameFont = gameObjects.Content.GameFont;
             _gameBounds = gameObjects.GameBounds;
             _gameObjects = gameObjects;
         }
@@ -26,13 +24,9 @@ namespace Invadaz
             get { return _lives; }
             set
             {
-
                 if (value < 0)
                 {
-                    _lives = 3;
-                    Score = 0;
-                    _gameObjects.Entities.RemoveAll(ent => ent.GetType().Name == "Enemy");
-                    _gameObjects.EnemyController.Startup();
+                    _gameObjects.Game.IsRunning = false;
                 }
                 else
                 {
@@ -43,6 +37,7 @@ namespace Invadaz
 
         public void Draw (SpriteBatch spriteBatch)
         {
+            
             var DisplayText = string.Format("Score: {0} Lives {1}",Score, Lives);
             DisplayCentre(spriteBatch, DisplayText);
             
@@ -50,9 +45,10 @@ namespace Invadaz
 
         private void DisplayCentre(SpriteBatch spriteBatch, string DisplayText)
         {
-            var TextLocation = new Vector2((_gameBounds.Width / 2) - (_gameFont.MeasureString(DisplayText).X / 2),
+            var gameFont = _gameObjects.Content.GameFont;
+            var TextLocation = new Vector2((_gameBounds.Width / 2) - (gameFont.MeasureString(DisplayText).X / 2),
                 _gameBounds.Height - 25);
-            spriteBatch.DrawString(_gameFont, DisplayText, TextLocation, Color.Wheat);
+            spriteBatch.DrawString(gameFont, DisplayText, TextLocation, Color.Wheat);
         }
     }
 }

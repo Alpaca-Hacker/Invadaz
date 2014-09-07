@@ -14,5 +14,7 @@ namespace Invadaz
         public Rectangle GameBounds { get; set; }
         public ScoreController Score { get; set; }
         public EnemyController EnemyController { get; set; }
+        public GameController GameController { get; set; }
+        public Game1 Game { get; set; }
     }
 }

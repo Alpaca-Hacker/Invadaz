@@ -19,9 +19,7 @@ namespace Invadaz
         public SpriteTexture BigExplosionTexure { get; set; }
 
         public SpriteFont GameFont { get; set; }
-
-
-        
+        public SpriteFont TitleFont { get; set; }
     }
 
 }

@@ -20,6 +20,8 @@ namespace Invadaz
         EnemyController enemyController;      
         List<Sprite> entities;
         ScoreController score;
+        GameController gameController;
+        public bool IsRunning;
 
 
         public Game1()
@@ -35,8 +37,13 @@ namespace Invadaz
             // TODO: Add your initialization logic here
             IsMouseVisible = true;
             gameObjects = new GameObjects();
+            gameObjects.Game = this;
             entities = gameObjects.Entities = new List<Sprite>();
-            gameBounds = gameObjects.GameBounds = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
+            gameBounds = gameObjects.GameBounds = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);           
+            enemyController = gameObjects.EnemyController = new EnemyController(gameObjects);
+            gameController = gameObjects.GameController = new GameController(gameObjects);
+            score = gameObjects.Score = new ScoreController(gameObjects);
+            IsRunning = false;
             base.Initialize();
         }
 
@@ -44,8 +51,6 @@ namespace Invadaz
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
- 
             content = gameObjects.Content = new GameContent();
             content.PlayerTexture = new SpriteTexture(Content.Load<Texture2D>("Player"),1,4,3);
             content.EnemyTextures = new SpriteTexture[]{
@@ -55,23 +60,14 @@ namespace Invadaz
                 new SpriteTexture(Content.Load<Texture2D>("Enemy4"),6,1,6),
                 new SpriteTexture(Content.Load<Texture2D>("Enemy5"),6,1,5),                                          
                                             };
-
             content.UfoTexture = new SpriteTexture(Content.Load<Texture2D>("UFO"),4,1,2);
             content.ExplosionTexture = new SpriteTexture (Content.Load<Texture2D>("Explosion"),1,7,4);
             content.BigExplosionTexure = new SpriteTexture(Content.Load<Texture2D>("BigExplosion"), 1, 7, 5);
             content.GameFont = Content.Load<SpriteFont>("GameFont20");
             content.BulletTexture = new SpriteTexture(Content.Load<Texture2D>("bullet"),1,1,1);
             content.BombTexture = new SpriteTexture(Content.Load<Texture2D>("Bomb"), 1, 2, 5);
+            content.TitleFont = Content.Load<SpriteFont>("LargeFont96");
 
-            player = gameObjects.Player = new Player(gameObjects);
-            entities.Add(player);
-            player.Location = new Vector2(0, gameBounds.Height - 100);
-            enemyController = gameObjects.EnemyController = new EnemyController(gameObjects);
-            enemyController.Startup();
-
-            score = gameObjects.Score = new ScoreController(gameObjects);
-            score.Score = 0;
-            score.Lives = 3;
 
         }
 
@@ -89,6 +85,13 @@ namespace Invadaz
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            if (!IsRunning)
+            {
+                gameController.Update(gameTime);
+                base.Update(gameTime);
+                return;
+            }
+            
 
             enemyController.Update(gameTime);
             if (entities != null)
@@ -127,15 +130,20 @@ namespace Invadaz
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-
-            if (entities != null)
+            if (IsRunning)
             {
-                foreach (var gameObject in entities)
+                if (entities != null)
                 {
-                    gameObject.Draw(spriteBatch);
+                    foreach (var gameObject in entities)
+                    {
+                        gameObject.Draw(spriteBatch);
+                    }
                 }
             }
-
+            else
+            {
+                gameController.Draw(spriteBatch);
+            }
             score.Draw(spriteBatch);
             
             spriteBatch.End();

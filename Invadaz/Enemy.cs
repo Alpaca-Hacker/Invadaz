@@ -33,7 +33,7 @@ namespace Invadaz
               location.Y += 20;
               if (location.Y>_gameBounds.Height-120)
               {
-                  location.Y = 40;
+                  return -1;
               }
               this.Location = location;
               return 0;

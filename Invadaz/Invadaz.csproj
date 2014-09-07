@@ -42,6 +42,7 @@
     <Compile Include="EnemyController.cs" />
     <Compile Include="Explosion.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="GameController.cs" />
     <Compile Include="GameObjects.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
@@ -96,6 +97,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\GameFont20.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\LargeFont96.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

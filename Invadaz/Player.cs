@@ -42,9 +42,7 @@ namespace Invadaz
                 }
                 else
                 {
-                    var player = _gameObjects.Player = new Player(_gameObjects);
-                    _gameObjects.Entities.Add(player);
-                    player.Location = new Vector2(0, _gameObjects.GameBounds.Height - 100);
+                    _gameObjects.GameController.NewPlayer();
                     _gameObjects.Score.Lives--;
                     return 1;
                 }
