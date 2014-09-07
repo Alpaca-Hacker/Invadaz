@@ -10,7 +10,6 @@ namespace Invadaz
     public class EnemyController
     {
  
-        int step = 1;
 
         private List<Sprite> _entities;
         private Rectangle _gameBounds;
@@ -55,11 +54,14 @@ namespace Invadaz
         {
             var enemies = new List<Sprite>();
             enemies = _entities.FindAll(x => x.GetType().Name == "Enemy");
+            var step = (enemies.Count()/10)+1;
+            var speed = _gameObjects.Score.Level*(((50 - enemies.Count())/10)+1) * _direction;
+
             if (!_hasHitEdge)
             {
                 foreach (var enemy in enemies)
                 {
-                    int check = enemy.Walk(gameTime, _direction, step);
+                    int check = enemy.Walk(gameTime, speed, step);
                     if (check == 1)
                     {
                         _hasHitEdge = true;
@@ -69,17 +71,26 @@ namespace Invadaz
         
             else
             {
+                bool hasMoved = false;
                 foreach (var enemy in enemies)
                 {
  
-                      int check = enemy.Walk(gameTime, 0, step);
+                    int check = enemy.Walk(gameTime, 0, step);
                     if (check == -1)
                     {
-                        _gameObjects.Score.Lives = -1;
+                        _gameObjects.Score.Lives = 0;
+                        _gameObjects.Player.Death();
+                    }
+                    if (check == 1)
+                    {
+                        hasMoved = true;
                     }
                 }
-                _direction = -_direction;
-                _hasHitEdge = false;
+                if (hasMoved)
+                {
+                    _direction = -_direction;
+                    _hasHitEdge = false;
+                }
             }
             var rnd = new Random();
             if (rnd.Next(1000)<50)

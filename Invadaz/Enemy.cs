@@ -36,7 +36,7 @@ namespace Invadaz
                   return -1;
               }
               this.Location = location;
-              return 0;
+              return 1;
           }
           location.X += direction;
           int returnValue = 0;

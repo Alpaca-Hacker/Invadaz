@@ -19,6 +19,7 @@ namespace Invadaz
             _gameObjects = gameObjects;
         }
 
+        public int Level { get; set; }
         public int Score { get; set; }
         public int Lives {
             get { return _lives; }
@@ -38,7 +39,7 @@ namespace Invadaz
         public void Draw (SpriteBatch spriteBatch)
         {
             
-            var DisplayText = string.Format("Score: {0} Lives {1}",Score, Lives);
+            var DisplayText = string.Format("Score: {0} Lives {1} Level {2}",Score, Lives, Level);
             DisplayCentre(spriteBatch, DisplayText);
             
         }

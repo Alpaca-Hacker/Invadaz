@@ -29,6 +29,7 @@ namespace Invadaz
             var score = _gameObjects.Score;
             score.Lives = 3;
             score.Score = 0;
+            score.Level = 1;
             _gameObjects.Entities.Clear();
             _gameObjects.EnemyController.Startup();
             NewPlayer();

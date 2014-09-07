@@ -119,6 +119,7 @@ namespace Invadaz
             }
             if (entities.FindAll(x => x.GetType().Name == "Enemy").Count <= 0)
             {
+                score.Level++;
                 enemyController.Startup();
             }
             base.Update(gameTime);
