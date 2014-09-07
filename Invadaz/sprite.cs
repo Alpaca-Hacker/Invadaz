@@ -64,7 +64,7 @@ namespace Invadaz
             return 0;
         }
 
-        public void Draw(SpriteBatch spriteBatch, float size = 1.0f)
+        public virtual void Draw(SpriteBatch spriteBatch, float size = 1.0f)
         {
 
             int row = (int)((float)_currentFrame / (float)_columns);

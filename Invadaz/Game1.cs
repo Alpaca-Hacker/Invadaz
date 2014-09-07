@@ -57,11 +57,13 @@ namespace Invadaz
 
             content.UfoTexture = new SpriteTexture(Content.Load<Texture2D>("UFO"),4,1,2);
             content.ExplosionTexture = new SpriteTexture (Content.Load<Texture2D>("Explosion"),1,7,4);
+            content.BigExplosionTexure = new SpriteTexture(Content.Load<Texture2D>("BigExplosion"), 1, 7, 5);
             content.GameFont = Content.Load<SpriteFont>("GameFont20");
             content.BulletTexture = new SpriteTexture(Content.Load<Texture2D>("bullet"),1,1,1);
             content.BombTexture = new SpriteTexture(Content.Load<Texture2D>("Bomb"), 1, 2, 5);
 
             player = gameObjects.Player = new Player(gameObjects);
+            entities.Add(player);
             player.Location = new Vector2(0, gameBounds.Height - 100);
             enemyController = gameObjects.EnemyController = new EnemyController(gameObjects);
             enemyController.Startup();
@@ -86,7 +88,6 @@ namespace Invadaz
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            player.Update(gameTime);
             enemyController.Update(gameTime);
             if (entities != null)
             {
@@ -124,7 +125,7 @@ namespace Invadaz
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-            player.Draw(spriteBatch, 0.75f);
+
             if (entities != null)
             {
                 foreach (var gameObject in entities)
@@ -132,6 +133,7 @@ namespace Invadaz
                     gameObject.Draw(spriteBatch);
                 }
             }
+
             score.Draw(spriteBatch);
             
             spriteBatch.End();

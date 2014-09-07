@@ -26,6 +26,11 @@ namespace Invadaz
                 return 1;
             }
             this.Location = location;
+            if (BoundingBox.Intersects(_player.BoundingBox))
+            {
+                _player.Death();
+                return 1;
+            }
             base.Update(gameTime);
             return 0;
         }
