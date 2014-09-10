@@ -17,7 +17,6 @@ namespace Invadaz
         GameContent content;
         GameObjects gameObjects;
         Rectangle gameBounds;
-        Player player;
         EnemyController enemyController;      
         List<Sprite> entities;
         ScoreController score;
